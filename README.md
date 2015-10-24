@@ -1,3 +1,5 @@
+WARNING: This package is not yet ready for public consumption.
+
 # hubot-lunchtime
 
 Enables hubot to suggest places for lunchtime. Powered by Yelp.
@@ -8,7 +10,7 @@ See [`src/lunchtime.coffee`](src/lunchtime.coffee) for full documentation.
 
 [![Build Status](https://travis-ci.org/jvarness/hubot-lunchtime.svg)](https://travis-ci.org/jvarness/hubot-lunchtime)
 
-## Installation
+## Installation - NOT YET IMPLEMENTED
 
 In hubot project repo, run:
 
@@ -24,7 +26,4 @@ Then add **hubot-lunchtime** to your `external-scripts.json`:
 
 ## Sample Interaction
 
-```
-user1>> hubot hello
-hubot>> hello!
-```
+Not yet implemented. Please wait for future releases.
