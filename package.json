@@ -1,22 +1,24 @@
 {
-  "name": "hubot-lunchtime",
+  "name": "hubot-yelp",
   "description": "Enables hubot to suggest places for lunchtime. Powered by Yelp.",
-  "version": "0.0.0",
-  "author": "Jake Varness <jake.varness@gmail.com>",
+  "version": "0.0.2",
+  "author": "Jake Varness <jake.varness@gmail.com> (http://github.com/jvarness)",
   "license": "MIT",
 
-  "keywords": "hubot, hubot-scripts",
+  "keywords": ["hubot", "hubot-scripts"],
 
   "repository": {
     "type": "git",
-    "url": "git://github.com/hubot-scripts/hubot-lunchtime.git"
+    "url": "git://github.com/jvarness/hubot-yelp.git"
   },
 
   "bugs": {
-    "url": "https://github.com/hubot-scripts/hubot-lunchtime/issues"
+    "url": "https://github.com/jvarness/hubot-yelp/issues"
   },
 
   "dependencies": {
+    "moment": "^2.10.6",
+    "oauth-signature": "^1.3.0"
   },
 
   "peerDependencies": {
@@ -35,7 +37,9 @@
     "matchdep": "~0.3.0",
     "mocha": "^2.1.0",
     "sinon": "^1.13.0",
-    "sinon-chai": "^2.7.0"
+    "sinon-chai": "^2.7.0",
+    "moment": "^2.10.6",
+    "oauth-signature": "^1.3.0"
   },
 
   "main": "index.coffee",
