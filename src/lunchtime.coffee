@@ -48,7 +48,7 @@ queryYelp = (msg, usrLocation, category) ->
   msg.http('https://api.yelp.com/v2/search/').query(params).get() (err, res, body) ->
     
     if err
-      msg.send 'Error :( #{err}'
+      msg.send "Error :( #{err}"
       return
       
     if res.statusCode isnt 200
