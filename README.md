@@ -6,7 +6,7 @@ See [`src/lunchtime.coffee`](src/lunchtime.coffee) for full documentation.
 
 ## Build and Static Analysis
 
-[![Build Status](https://travis-ci.org/jvarness/hubot-yelp.svg)](https://travis-ci.org/jvarness/hubot-lunchtime)
+[![Build Status](https://travis-ci.org/jvarness/hubot-yelp.svg)](https://travis-ci.org/jvarness/hubot-yelp)
 [![Codacy Badge](https://api.codacy.com/project/badge/6a56acb4d30644a3993e44199033c029)](https://www.codacy.com/app/jvarness/hubot-yelp)
 
 ## Installation
@@ -46,7 +46,19 @@ If a location is not specified, the script is hard-coded to use Kansas City, MO 
 
 ## Sample Interaction
 
-The hubot-yelp script will allow your hubot to look up different kinds of food for you. Type `hubot lunchtime thats ` 
+The hubot-yelp script will allow your hubot to look up different kinds of food for you. By using `hubot lunchtime`, hubot
+will find a random place to eat using the default location:
+
+```
+<You> hubot lunchtime
+<hubot> Give this place a shot:
+<hubot> Novel Restaurant
+<hubot> Yelp rating: 4.5
+<hubot> Total reviews: 133
+<hubot> http://www.yelp.com/biz/novel-restaurant-kansas-city
+```
+
+This script makes it possible to specify any location to find food. Type `hubot lunchtime thats ` 
 to call the script, then specify a category of food:
 
 ```

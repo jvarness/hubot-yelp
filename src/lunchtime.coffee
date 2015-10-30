@@ -13,9 +13,10 @@
 #   HUBOT_YELP_DEFAULT_LOCATION
 #
 # Commands:
+#   hubot lunchtime - randomly selects a place to eat using the default location
 #   hubot lunchtime near <city|state|zip> - randomly selects a place to eat near a specified location.
-#	  hubot lunchtime that's <term> - randomly selects a place to eat near the default configured location that matches a category.
-#	  hubot lunchtime near <city|state|zip> that's <term> - randomly selects a place to eat near a specified location matching a category.
+#   hubot lunchtime thats <term> - randomly selects a place to eat near the default configured location that matches a category.
+#   hubot lunchtime near <city|state|zip> thats <term> - randomly selects a place to eat near a specified location matching a category.
 #
 # Author:
 #   Jake Varness, http://github.com/jvarness
@@ -40,14 +41,14 @@ queryYelp = (msg, usrLocation, category) ->
     location: usrLocation or DEFAULT_LOCATION or 'Kansas City, MO',
     term: category
   }
-
+  
   signature = oauth.generate('GET', 'https://api.yelp.com/v2/search/', params, CONSUMER_SECRET, TOKEN_SECRET, { encodeSignature: false})
   params.oauth_signature = signature
-
+  
   msg.http('https://api.yelp.com/v2/search/').query(params).get() (err, res, body) ->
     
     if err
-      msg.send 'Error :( {#err}'
+      msg.send 'Error :( #{err}'
       return
       
     if res.statusCode isnt 200
@@ -63,13 +64,11 @@ queryYelp = (msg, usrLocation, category) ->
     msg.send randomBusiness.url 
 
 module.exports = (robot) ->
-  robot.respond /(?:lunchtime)\W*(((?:near\W*(.*)\W*)(?:thats\W*(.*)))|(?:near\W*(.*))|(?:thats\W*(.*)))/i, (msg) ->
+  robot.respond /lunchtime\W*(near (.*) thats (.*)|near (.*)|thats (.*))?/i, (msg) ->
     matches = msg.match
-    usrLocation = matches[3] or matches[5] or ''
-    category = matches[4] or matches[6] or ''
-    usrLocation = usrLocation.trim()
-    category = category.trim()
-    queryYelp(msg, usrLocation, category)
+    usrLocation = matches[2] or matches[4] or ''
+    category = matches[3] or matches[5] or ''
+    queryYelp(msg, usrLocation.trim(), category.trim())
 
 
 
