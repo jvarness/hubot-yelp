@@ -66,7 +66,7 @@ queryYelp = (msg, usrLocation, category) ->
       msg.send 'Total reviews: ' + randomBusiness.review_count
       msg.send randomBusiness.url
     else
-      msg.send "Couldn't find a place to eat there. Try again.ß"
+      msg.send "Couldn't find a place to eat there. Try again."
 
 module.exports = (robot) ->
   robot.respond /lunchtime\W*(near (.*) thats (.*)|near (.*)|thats (.*))?/i, (msg) ->
