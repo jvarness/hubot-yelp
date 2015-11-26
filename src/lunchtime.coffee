@@ -11,6 +11,7 @@
 #   HUBOT_YELP_TOKEN
 #   HUBOT_YELP_TOKEN_SECRET
 #   HUBOT_YELP_DEFAULT_LOCATION
+#   HUBOT_YELP_DEFAULT_CATEGORY
 #
 # Commands:
 #   hubot lunchtime - randomly selects a place to eat using the default location
@@ -29,6 +30,7 @@ CONSUMER_SECRET  = process.env.HUBOT_YELP_CONSUMER_SECRET
 TOKEN            = process.env.HUBOT_YELP_TOKEN
 TOKEN_SECRET     = process.env.HUBOT_YELP_TOKEN_SECRET
 DEFAULT_LOCATION = process.env.HUBOT_YELP_DEFAULT_LOCATION
+DEFAULT_CATEGORY = process.env.HUBOT_YELP_DEFAULT_CATEGORY
 
 queryYelp = (msg, usrLocation, category) ->
   seconds = moment().unix()
@@ -39,7 +41,7 @@ queryYelp = (msg, usrLocation, category) ->
     oauth_timestamp: seconds,
     oauth_nonce: 'str' + seconds,
     location: usrLocation or DEFAULT_LOCATION or 'Kansas City, MO',
-    term: category
+    term: category or DEFAULT_CATEGORY
   }
   
   signature = oauth.generate('GET', 'https://api.yelp.com/v2/search/', params, CONSUMER_SECRET, TOKEN_SECRET, { encodeSignature: false})
@@ -52,16 +54,19 @@ queryYelp = (msg, usrLocation, category) ->
       return
       
     if res.statusCode isnt 200
-      msg.send 'Error :( statusCode ' + res.statusCode + ' body ' + body
+      msg.send "Error occurred: #{res.statusCode} error text: #{body.error.text}"
       return
         
     response = JSON.parse(body)
-    msg.send 'Give this place a shot:'
-    randomBusiness = msg.random response.businesses
-    msg.send randomBusiness.name 
-    msg.send 'Yelp rating: ' + randomBusiness.rating
-    msg.send 'Total reviews: ' + randomBusiness.review_count
-    msg.send randomBusiness.url 
+    if response.businesses.length > 0
+      msg.send 'Give this place a shot:'
+      randomBusiness = msg.random response.businesses
+      msg.send randomBusiness.name 
+      msg.send 'Yelp rating: ' + randomBusiness.rating
+      msg.send 'Total reviews: ' + randomBusiness.review_count
+      msg.send randomBusiness.url
+    else
+      msg.send "Couldn't find a place to eat there. Try again."
 
 module.exports = (robot) ->
   robot.respond /lunchtime\W*(near (.*) thats (.*)|near (.*)|thats (.*))?/i, (msg) ->
