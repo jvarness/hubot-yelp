@@ -1,7 +1,7 @@
 {
   "name": "hubot-yelp",
   "description": "Enables hubot to suggest places for lunchtime. Powered by Yelp.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "Jake Varness <jake.varness@gmail.com> (http://github.com/jvarness)",
   "license": "MIT",
   "keywords": [
