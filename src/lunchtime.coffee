@@ -31,6 +31,7 @@ TOKEN            = process.env.HUBOT_YELP_TOKEN
 TOKEN_SECRET     = process.env.HUBOT_YELP_TOKEN_SECRET
 DEFAULT_LOCATION = process.env.HUBOT_YELP_DEFAULT_LOCATION
 DEFAULT_CATEGORY = process.env.HUBOT_YELP_DEFAULT_CATEGORY
+DEFAULT_LANG     = process.env.HUBOT_YELP_DEFAULT_LANG
 
 queryYelp = (msg, usrLocation, category) ->
   seconds = moment().unix()
@@ -42,6 +43,7 @@ queryYelp = (msg, usrLocation, category) ->
     oauth_nonce: 'str' + seconds,
     location: usrLocation or DEFAULT_LOCATION or 'Kansas City, MO',
     term: category or DEFAULT_CATEGORY
+    lang: DEFAULT_LANG or 'en'
   }
   
   signature = oauth.generate('GET', 'https://api.yelp.com/v2/search/', params, CONSUMER_SECRET, TOKEN_SECRET, { encodeSignature: false})
