@@ -41,10 +41,12 @@ The following configurations are optional:
 ```coffeescript
 HUBOT_YELP_DEFAULT_LOCATION   # The default location that should be used
 HUBOT_YELP_DEFAULT_CATEGORY   # The default category that should be used
+HUBOT_YELP_DEFAULT_LANG       # The default language that should be used
 ```
 
 If a location is not specified, the script is hard-coded to use Kansas City, MO as the default location. If no 
-default category is specified, no category will be used unless specified by the user.
+default category is specified, no category will be used unless specified by the user. If a language is not specified, 
+the script is hard-coded to use en as the default language.
 
 ## Sample Interaction
 
