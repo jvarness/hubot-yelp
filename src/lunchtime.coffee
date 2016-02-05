@@ -12,6 +12,7 @@
 #   HUBOT_YELP_TOKEN_SECRET
 #   HUBOT_YELP_DEFAULT_LOCATION
 #   HUBOT_YELP_DEFAULT_CATEGORY
+#   HUBOT_YELP_DEFAULT_LANG
 #
 # Commands:
 #   hubot lunchtime - randomly selects a place to eat using the default location
@@ -76,7 +77,3 @@ module.exports = (robot) ->
     usrLocation = matches[2] or matches[4] or ''
     category = matches[3] or matches[5] or ''
     queryYelp(msg, usrLocation.trim(), category.trim())
-
-
-
-
