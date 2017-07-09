@@ -2,14 +2,11 @@
 #   Enables hubot to suggest places for lunchtime. Powered by Yelp.
 #
 # Dependencies:
-#   "moment": "^2.10.6",
-#   "oauth-signature": "^1.3.0"
+#   @"yelpv3": "^1.2.1"
 # 
 # Configurations:
-#   HUBOT_YELP_CONSUMER_KEY
-#   HUBOT_YELP_CONSUMER_SECRET
-#   HUBOT_YELP_TOKEN
-#   HUBOT_YELP_TOKEN_SECRET
+#   HUBOT_YELP_APP_ID
+#   HUBOT_YELP_APP_SECRET
 #   HUBOT_YELP_DEFAULT_LOCATION
 #   HUBOT_YELP_DEFAULT_CATEGORY
 #
@@ -22,53 +19,41 @@
 # Author:
 #   Jake Varness, http://github.com/jvarness
 
-oauth = require 'oauth-signature'
-moment = require 'moment'
+yelpv3 = require 'yelpv3'
 
-CONSUMER_KEY     = process.env.HUBOT_YELP_CONSUMER_KEY
-CONSUMER_SECRET  = process.env.HUBOT_YELP_CONSUMER_SECRET
-TOKEN            = process.env.HUBOT_YELP_TOKEN
-TOKEN_SECRET     = process.env.HUBOT_YELP_TOKEN_SECRET
+APP_ID           = process.env.HUBOT_YELP_APP_ID
+APP_SECRET       = process.env.HUBOT_YELP_APP_SECRET
 DEFAULT_LOCATION = process.env.HUBOT_YELP_DEFAULT_LOCATION
 DEFAULT_CATEGORY = process.env.HUBOT_YELP_DEFAULT_CATEGORY
 DEFAULT_LANG     = process.env.HUBOT_YELP_DEFAULT_LANG
 
 queryYelp = (msg, usrLocation, category) ->
-  seconds = moment().unix()
+  yelp = new yelpv3({
+    app_id: APP_ID,
+    app_secret: APP_SECRET
+  })
   params = {
-    oauth_consumer_key: CONSUMER_KEY,
-    oauth_token: TOKEN
-    oauth_signature_method:	'HMAC-SHA1',
-    oauth_timestamp: seconds,
-    oauth_nonce: 'str' + seconds,
     location: usrLocation or DEFAULT_LOCATION or 'Kansas City, MO',
     term: category or DEFAULT_CATEGORY
-    lang: DEFAULT_LANG or 'en'
+    locale: DEFAULT_LANG or 'en_US'
   }
-  
-  signature = oauth.generate('GET', 'https://api.yelp.com/v2/search/', params, CONSUMER_SECRET, TOKEN_SECRET, { encodeSignature: false})
-  params.oauth_signature = signature
-  
-  msg.http('https://api.yelp.com/v2/search/').query(params).get() (err, res, body) ->
-    
-    if err
-      msg.send "Error :( #{err}"
-      return
-      
-    if res.statusCode isnt 200
-      msg.send "Error occurred: #{res.statusCode} error text: #{body.error.text}"
-      return
-        
-    response = JSON.parse(body)
-    if response.businesses.length > 0
-      msg.send 'Give this place a shot:'
-      randomBusiness = msg.random response.businesses
-      msg.send randomBusiness.name 
-      msg.send 'Yelp rating: ' + randomBusiness.rating
-      msg.send 'Total reviews: ' + randomBusiness.review_count
-      msg.send randomBusiness.url
-    else
-      msg.send "Couldn't find a place to eat there. Try again."
+
+  yelp.search params
+    .then (response) ->
+      data = JSON.parse response
+      if data.businesses.length > 0
+        msg.send 'Give this place a shot:'
+        randomBusiness = msg.random data.businesses
+        msg.send randomBusiness.name 
+        msg.send 'Yelp rating: ' + randomBusiness.rating
+        msg.send 'Total reviews: ' + randomBusiness.review_count
+        msg.send randomBusiness.url
+      else
+        msg.send "Couldn't find a place to eat there. Try again."
+    .catch (err) ->
+      msg.send "#{err}"
+      errorDescription = JSON.parse(err.error)['error']['description']
+      msg.send "Error :( #{err.statusCode}: #{errorDescription}"
 
 module.exports = (robot) ->
   robot.respond /lunchtime\W*(near (.*) thats (.*)|near (.*)|thats (.*))?/i, (msg) ->
@@ -76,7 +61,3 @@ module.exports = (robot) ->
     usrLocation = matches[2] or matches[4] or ''
     category = matches[3] or matches[5] or ''
     queryYelp(msg, usrLocation.trim(), category.trim())
-
-
-
-

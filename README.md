@@ -28,25 +28,25 @@ Then add **hubot-yelp** to your `external-scripts.json`:
 The following configuration is required in order to run the yelp script:
 
 ```coffeescript
-HUBOT_YELP_CONSUMER_KEY       # The Yelp API consumer key
-HUBOT_YELP_CONSUMER_SECRET    # The Yelp API consumer secret
-HUBOT_YELP_TOKEN              # The Yelp API consumer token
-HUBOT_YELP_TOKEN_SECRET       # The Yelp API token secret
+HUBOT_YELP_APP_ID        # The Yelp API application ID
+HUBOT_YELP_APP_SECRET    # The Yelp API application secret
 ```
 
-All of these should be configured using the API keys given to you when you signed up for a Yelp Developer API account.
+These should be configured using the API keys given to you when you sign up for a Yelp Developer API account.
 
 The following configurations are optional:
 
 ```coffeescript
 HUBOT_YELP_DEFAULT_LOCATION   # The default location that should be used
 HUBOT_YELP_DEFAULT_CATEGORY   # The default category that should be used
-HUBOT_YELP_DEFAULT_LANG       # The default language that should be used
+HUBOT_YELP_DEFAULT_LANG       # The default locale that should be used
 ```
 
 If a location is not specified, the script is hard-coded to use Kansas City, MO as the default location. If no 
-default category is specified, no category will be used unless specified by the user. If a language is not specified, 
-the script is hard-coded to use en as the default language.
+default category is specified, no category will be used unless specified by the user. If a locale is not specified, 
+the script is hard-coded to use `en_US` as the default locale.
+
+To see if a locale that you need is supported, check Yelp Fusion's [list of supported locales](https://www.yelp.com/developers/documentation/v3/supported_locales).
 
 ## Sample Interaction
 
@@ -103,8 +103,10 @@ The script also allows you to specify a place and a category by typing `hubot lu
 
 ## Powered by
 
+[YelpV3 by danieljin](https://github.com/danieljin/yelpv3)
+
 [![Yelp](https://s3-media3.fl.yelpcdn.com/assets/srv0/developer_pages/65526d1a519b/assets/img/Powered_By_Yelp_Red.png)](https://www.yelp.com/developers)
 
-[![CoffeeScript](http://coffeescript.org/documentation/images/logo.png)](http://coffeescript.org/)
+[CoffeeScript](http://coffeescript.org/)
 
 [Hubot](https://hubot.github.com/)
