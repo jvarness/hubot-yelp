@@ -14,4 +14,4 @@ describe 'The hubot-yelp script', ->
   describe 'should register a respond listener for', ->
     
     it 'lunchtime near <location> thats <term>', ->
-      expect(@robot.respond).to.have.been.calledWith(/lunchtime\W*(near (.*) thats (.*)|near (.*)|thats (.*))?/i)
+      expect(@robot.respond).to.have.been.calledWith /lunchtime\W*(near (.*) thats (.*)|near (.*)|thats (.*))?/i
