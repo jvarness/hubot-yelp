@@ -38,20 +38,21 @@ queryYelp = (msg, usrLocation, category) ->
     locale: DEFAULT_LANG or 'en_US'
   }
 
-  yelp.search params
+  yelp.search (params)
     .then (response) ->
       data = JSON.parse response
       if data.businesses.length > 0
-        msg.send 'Give this place a shot:'
         randomBusiness = msg.random data.businesses
-        msg.send randomBusiness.name 
-        msg.send 'Yelp rating: ' + randomBusiness.rating
-        msg.send 'Total reviews: ' + randomBusiness.review_count
-        msg.send randomBusiness.url
+        message = """
+          Give this place a shot:
+          #{ randomBusiness.name  }
+          Yelp rating: #{ randomBusiness.rating }
+          Total reviews: #{ randomBusiness.review_count }
+          #{ randomBusiness.url }
+        """
       else
         msg.send "Couldn't find a place to eat there. Try again."
     .catch (err) ->
-      msg.send "#{err}"
       errorDescription = JSON.parse(err.error)['error']['description']
       msg.send "Error :( #{err.statusCode}: #{errorDescription}"
 
